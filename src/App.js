@@ -10,16 +10,15 @@ class App extends Component {
 
   componentDidMount() {
     this.getVenues()
-    this.renderMap()
   }
 
-
+  //Load map
   renderMap = () => {
     loadScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyB3ro0efVYXR4fpp2LGFy_OH_1pYSGr5zU&callback=initMap")
     window.initMap = this.initMap
   }
 
-
+  //This function calls the api(async)
   getVenues = () => {
     const endPoint = "https://api.foursquare.com/v2/venues/explore?"
     const parameters = {
@@ -30,22 +29,54 @@ class App extends Component {
       v:"20182507"
     }
 
+    //Get data and store it in venues
     axios.get(endPoint + new URLSearchParams(parameters))
       .then(response => {
         this.setState({
           venues: response.data.response.groups[0].items
-        })
+        }, this.renderMap())
     })
     .catch(error => {
       console.log("error " + error)
     })
   }
 
+  //Creates map in map id html tag
   initMap = () => {
     let map = new window.google.maps.Map(document.getElementById('map'), {
       center: {lat: 37.335, lng: -121.893},
       zoom: 8
     });
+
+    //Create infowindow
+    var infowindow = new window.google.maps.InfoWindow();
+
+    //Display markers
+    this.state.venues.map(myVenue => {
+
+      var contentString = `${myVenue.venue.name}`;
+
+      //create map markers
+      var marker = new window.google.maps.Marker({
+        position: {lat: myVenue.venue.location.lat, lng: myVenue.venue.location.lng},
+        map: map,
+        title: myVenue.venue.name
+      });
+
+      //Open info window on click
+      marker.addListener('click', function() {
+        
+        //Change the content
+        infowindow.setContent(contentString)
+
+        //Open info window
+        infowindow.open(map, marker);
+
+      });
+    })
+
+
+
   }
 
   render() {
