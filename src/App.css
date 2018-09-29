@@ -35,4 +35,16 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+  background-color: #008080;
+}
+
+.hamburger-icon {
+  width: 2em;
+  height: 2em;
+}
+
+h1 {
+  margin: 0;
+  display: inline-block;
+  text-align: center;
 }

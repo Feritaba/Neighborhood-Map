@@ -82,7 +82,15 @@ class App extends Component {
   render() {
     return (
       <main>
-        <div id="map"></div>
+        <div>
+          <a className="menu" tabIndex="0">
+            <svg class="hamburger-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"/>
+            </svg>
+          </a>
+          <h1>Neghiborhood Map</h1>
+          <div id="map"></div>
+        </div>  
       </main>
     );
   }
