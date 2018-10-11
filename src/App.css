@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  display: flex;
+  flex-flow: row nowrap;
 }
 
 .App-logo {
@@ -27,24 +29,41 @@
   to { transform: rotate(360deg); }
 }
 
-#map {
-  height: 100vh;
-}
-
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #008080;
-}
-
-.hamburger-icon {
-  width: 2em;
-  height: 2em;
 }
 
 h1 {
   margin: 0;
-  display: inline-block;
   text-align: center;
+  background-color: #EEF79D;
+}
+
+#map {
+  height: 75vh;
+  width: 75%;
+  float: right;
+}
+
+#container {
+  height: 75vh;
+  width: 25%;
+  float: left;
+}
+
+#sideBar {
+  width: 25%;
+  height: 75vh;
+}
+
+#search {
+  width: 100%;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+  background-color: white;
+  padding: 3%;
 }

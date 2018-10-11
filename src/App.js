@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios';
+import SideBar from './SideBar.js';
 
 class App extends Component {
 
@@ -49,12 +50,12 @@ class App extends Component {
     });
 
     //Create infowindow
-    var infowindow = new window.google.maps.InfoWindow();
+    let infowindow = new window.google.maps.InfoWindow();
 
     //Display markers
     this.state.venues.map(myVenue => {
 
-      var contentString = `${myVenue.venue.name}`;
+      let contentString = `${myVenue.venue.name}`;
 
       //create map markers
       var marker = new window.google.maps.Marker({
@@ -83,14 +84,10 @@ class App extends Component {
     return (
       <main>
         <div>
-          <a className="menu" tabIndex="0">
-            <svg class="hamburger-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"/>
-            </svg>
-          </a>
-          <h1>Neghiborhood Map</h1>
-          <div id="map"></div>
-        </div>  
+            <h1>Neghiborhood Map</h1>
+        </div>
+        <div id="map"></div>
+        <div id="sideBar"><SideBar /></div> 
       </main>
     );
   }
