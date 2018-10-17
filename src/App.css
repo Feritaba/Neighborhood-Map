@@ -42,20 +42,14 @@ h1 {
 }
 
 #map {
-  height: 75vh;
+  height: 100vh;
   width: 75%;
   float: right;
 }
 
-#container {
-  height: 75vh;
-  width: 25%;
-  float: left;
-}
-
 #sideBar {
   width: 25%;
-  height: 75vh;
+  height: 100vh;
 }
 
 #search {
@@ -66,4 +60,16 @@ h1 {
   font-size: 1em;
   background-color: white;
   padding: 3%;
+}
+
+ol.venueList {
+  padding-left: .8em;
+}
+
+li.listItem {
+  list-style: none;
+  font-size: 1em;
+  margin-top: 1em;
+  padding: 0;
+  cursor: pointer;
 }
