@@ -7,18 +7,14 @@ class Sidebar extends Component {
 		super(props);
 	}
 
-	componentDidMount() {
-
-	}
-
 	render() {
 		return(
 			<div id="sidebar">
-            	<input type={"search"} id={"search"} placeholder={"Filter Coffee Shops"} value={this.props.query} onChange={(e) => { this.props.filterVenues(e.target.value) }} />
+            	<input tabindex="1" type={"search"} id={"search"} placeholder={"Filter Coffee Shops"} value={this.props.query} onChange={(e) => { this.props.filterVenues(e.target.value) }} />
             	<br/>
             	{
               		this.props.filteredVenues && this.props.filteredVenues.length > 0 && this.props.filteredVenues.map((venue,index) => (
-                		<div key={index} className="venue-item" onClick={() => { this.props.listItemClick(venue) }}>
+                		<div tabindex="2" key={index} className="venue-item" onClick={() => { this.props.listItemClick(venue) }}>
                   			{venue.name}
                 		</div>
                 	))

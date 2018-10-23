@@ -90,8 +90,8 @@ class App extends Component {
 
   render() {
     return (
-        <div clasName="container">
-          <div clasName="App-header"><h1>
+        <div>
+          <div className="App-header"><h1>
             Neighborhood Map
           </h1></div>
           <div id="map"></div>
