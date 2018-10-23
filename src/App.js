@@ -1,146 +1,107 @@
 import React, { Component } from 'react';
 import './App.css';
-// import axios from 'axios';
-import SideBar from './SideBar.js';
-import SquareAPI from "./Library.js";
+import Sidebar from './SideBar.js'
+
+import { load_google_maps, load_places } from './functions.js'
 
 class App extends Component {
 
-  constructor() {
-
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      venues : [],
-      markers :[],
-      center:[]
+      query: ''
     }
+
+    this.listItemClick = this.listItemClick.bind(this);
   }
 
-    componentDidMount() {
-      SquareAPI.search({
-      near:"San Jose, CA",
-      query:"coffee",
-      limit: 12
-    }).then(results => {
-     // console.log(results),
-     // console.log(results.response.venues),
-     this.setState({venues: results.response.venues}),
-     // console.log(this.venues.items),
-      this.renderMap()
-    });
+  componentDidMount() {
+    let googleMapsPromise = load_google_maps();
+    let placesPromise = load_places();
 
-    // this.getVenues();
-   }
+    Promise.all([
+        googleMapsPromise,
+        placesPromise
+      ])
+      .then( values => {
+        let google =values[0];
+        this.venues =values[1].response.venues;
+      
+        this.google = google;
+        this.markers = [];
+        this.infowindow = new google.maps.InfoWindow();
+        this.map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 10,
+        scrollwheel: true,
+        center: { lat: this.venues[0].location.lat, lng: this.venues[0].location.lng }
+        });
 
-  markerClick= marker => {
-    marker.isOpen = true;
-    this.setState ({markers: Object.assign(this.state.markers, marker)});
-    const venue = this.state.venues.find(venue => venue.id === marker.id);
+        this.venues.forEach(venue => {
+          let marker = new google.maps.Marker({
+          position: { lat: venue.location.lat, lng: venue.location.lng },
+          map: this.map,
+          venue: venue,
+          id: venue.id,
+          name: venue.name,
+          animation: google.maps.Animation.DROP
+          });
 
-    // this.props.getVenues.getVenueDetails(marker.id).then(res=> {
-      SquareAPI.getVenueDetails(marker.id).then(res=> {
-      const newVenue = Object.assign(venue, res.response.venue);
-      console.log(newVenue);
-      this.setState({venues: Object.assign(this.state.venues, newVenue)});
-    })
-  }
+          marker.addListener('click', () => {
+            if (marker.getAnimation() !== null) { marker.setAnimation(null); }
+            else { marker.setAnimation(google.maps.Animation.BOUNCE); }
+            setTimeout(() => { marker.setAnimation(null) }, 1500);
+          });
 
+          google.maps.event.addListener(marker, 'click', () => {
+           this.infowindow.setContent(marker.name);
+           this.map.setCenter(marker.position);
+           this.infowindow.open(this.map, marker);
+          });
 
-  listItemClick = venue => {
-    const marker = this.state.markers.find(marker => marker.id === venue.id);
-    this.markerClick(marker);
-   }
-
-
-
-  //Load map
-  renderMap = () => {
-    loadScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyB3ro0efVYXR4fpp2LGFy_OH_1pYSGr5zU&callback=initMap")
-    window.initMap = this.initMap
-  }
-
-  //This function calls the api(async)
-  // getVenues = () => {
-  //   const endPoint = "https://api.foursquare.com/v2/venues/explore?"
-  //   const parameters = {
-  //     client_id: "V0MGSNY43UW3DAQ4O5H0WQ2APPZNTVJ2X503OCDPEWPIVLG1",
-  //     client_secret: "VYIZPC2KDMBWEK3Q5ESDRORXXYBBFJ0LDAWP5NDNWZAYCIAH",
-  //     query: "coffee",
-  //     near: "San Jose",
-  //     v:"20182507"
-  //   }
-
-  //   //Get data and store it in venues
-  //   axios.get(endPoint + new URLSearchParams(parameters))
-  //     .then(response => {
-  //       this.setState({
-  //         venues: response.data.response.groups[0].items
-  //       }, console.log(response)
-  //       ,this.renderMap())
-  //   })
-  //   .catch(error => {
-  //     console.log("error " + error)
-  //   })
-  // }
-
-  //Creates map in map id html tag
-  initMap = () => {
-    let map = new window.google.maps.Map(document.getElementById('map'), {
-      center: {lat: 37.335, lng: -121.893},
-      zoom: 12
-    });
-
-    //Create infowindow
-    let infowindow = new window.google.maps.InfoWindow();
-
-    //Display markers
-    this.state.venues.map(myVenue => {
-
-      // let contentString = `${myVenue.venue.name}`;
-      let contentString = `${myVenue.name}`;
-
-      //create map markers
-      var marker = new window.google.maps.Marker({
-        position: {lat: myVenue.location.lat, lng: myVenue.location.lng},
-        map: map,
-        title: myVenue.name
+        this.markers.push(marker);
       });
 
-      //Open info window on click
-      marker.addListener('click', function() {
-        
-        //Change the content
-        infowindow.setContent(contentString)
-
-        //Open info window
-        infowindow.open(map, marker);
-
-      });
+      this.setState({ filteredVenues: this.venues });
     })
   }
+    
+    listItemClick = (venue) => {
+      let marker = this.markers.filter(m => m.id === venue.id)[0];
+      this.infowindow.setContent(marker.name);
+      this.map.setCenter(marker.position);
+      this.infowindow.open(this.map, marker);
+
+      if (marker.getAnimation() !== null) { marker.setAnimation(null); }
+      else { marker.setAnimation(this.google.maps.Animation.BOUNCE); }
+      setTimeout(() => { marker.setAnimation(null) }, 1500);
+    }
+
+    filterVenues = (query) => {
+
+      let f = this.venues.filter(venue => venue.name.toLowerCase().includes(query.toLowerCase()));
+      this.markers.forEach(marker => {
+        marker.name.toLowerCase().includes(query.toLowerCase()) == true ?
+        marker.setVisible(true) : 
+        marker.setVisible(false);
+      });
+
+      this.setState ({ filteredVenues: f, query});
+    }
 
   render() {
     return (
-      <main>
-        <div>
-            <h1>Neghiborhood Map</h1>
+        <div clasName="container">
+          <div clasName="App-header"><h1>
+            Neighborhood Map
+          </h1></div>
+          <div id="map"></div>
+          <Sidebar 
+            filterVenues={this.filterVenues}
+            filteredVenues={this.state.filteredVenues}
+            listItemClick={this.listItemClick} />
         </div>
-        <div id="map"></div>
-        <div id="sideBar"><SideBar {...this.state} listItemClick={this.listItemClick}/></div> 
-      </main>
     );
   }
-}
-
-
-
-function loadScript(url) {
-  let index  = window.document.getElementsByTagName("script")[0];
-  let script = window.document.createElement("script");
-  script.src = url;
-  script.async = true;
-  script.defer = true;
-  index.parentNode.insertBefore(script, index);
 }
 
 export default App;

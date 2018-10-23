@@ -1,13 +1,32 @@
 import React, { Component } from 'react';
-import VenueList from './VenueList.js';
 
-export default class SideBar extends Component {
+
+class Sidebar extends Component {
+
+	constructor(props) {
+		super(props);
+	}
+
+	componentDidMount() {
+
+	}
+
 	render() {
-		return(<div className="sideBar">
-			<input type={"search"} id={"search"} placeholder={"Filter"} />
-			<VenueList {...this.props}
-				listItemClick={this.props.listItemClick}
-			/>
-		</div>)
+		return(
+			<div id="sidebar">
+            	<input type={"search"} id={"search"} placeholder={"Filter Coffee Shops"} value={this.props.query} onChange={(e) => { this.props.filterVenues(e.target.value) }} />
+            	<br/>
+            	{
+              		this.props.filteredVenues && this.props.filteredVenues.length > 0 && this.props.filteredVenues.map((venue,index) => (
+                		<div key={index} className="venue-item" onClick={() => { this.props.listItemClick(venue) }}>
+                  			{venue.name}
+                		</div>
+                	))
+            	}
+        	</div>
+    	);
 	}
 }
+
+
+export default Sidebar;

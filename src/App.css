@@ -1,55 +1,47 @@
-.App {
-  text-align: center;
-  display: flex;
-  flex-flow: row nowrap;
+body {
+  overflow: hidden;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.App {
+  text-align: center;
+}
+
+.container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.venue-item{
+  padding: 5px;
+  margin-bottom: 5px;
+  border: 1px solid grey;
+}
+
+
+.venue-item:hover {
+  background-color: #0056b3;
+  cursor:pointer;
 }
 
 .App-header {
+  text-align: center;
   background-color: #222;
   height: 150px;
   padding: 20px;
-  color: white;
+  color: black;
 }
 
-.App-title {
-  font-size: 1.5em;
+.transition {
+  -webkit-transition: transition 0.3s;
+  -moz-transition: transition 0.3s;
+  -o-transition: transition 0.3s;
+  -ms-transition: transition 0.3s;
+  transition: 0.3s;
 }
 
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-h1 {
-  margin: 0;
-  text-align: center;
-  background-color: #EEF79D;
-}
-
-#map {
-  height: 100vh;
-  width: 75%;
-  float: right;
-}
-
-#sideBar {
-  width: 25%;
-  height: 100vh;
+.info_box {
+  width: 300px;
 }
 
 #search {
@@ -62,14 +54,36 @@ h1 {
   padding: 3%;
 }
 
-ol.venueList {
-  padding-left: .8em;
+.text-center {
+  text-align: center;
 }
 
-li.listItem {
-  list-style: none;
-  font-size: 1em;
-  margin-top: 1em;
-  padding: 0;
-  cursor: pointer;
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+#sidebar {
+  position: absolute;
+  z-index: 100;
+  box-shadow: 0px 1px 1px grey;
+  background: #f2f2f2;
+  width: 325px;
+  max-width: 100%;
+  height: calc(100vh - 60px);
+  overflow-y: scroll;
+  top: 0;
+  margin-top: 80px;
+
+}
+
+#map {
+  width: 80%;
+  height: calc(100vh - 60px);
+  float: right;
+}
+
+@media (max-width: 475px) {
+  .App-header { font-size: 0.5em;}
 }
