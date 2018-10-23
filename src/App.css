@@ -79,6 +79,10 @@ body {
 }
 
 @media (max-width: 475px) {
+  #map { width: 100%; }
   .App-header { font-size: 0.5em;}
-  #sidebar {width: 100%;}
+  #sidebar {
+    width: 30%;
+    margin-top: 50px;
+  }
 }

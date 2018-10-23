@@ -15,3 +15,8 @@ Project created using React JS, Foursquare API and Google Maps API. <br/>
 * run `npm start`
 * open browser to `localhost:3000`
 * enjoy!
+
+## How to run the app in production build
+* open terminal and change directory into project root
+* run `npm run serve`
+* open browser to `localhost:5000`

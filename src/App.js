@@ -15,6 +15,7 @@ class App extends Component {
     this.listItemClick = this.listItemClick.bind(this);
   }
 
+  //loads the page
   componentDidMount() {
     let googleMapsPromise = load_google_maps();
     let placesPromise = load_places();
@@ -36,6 +37,8 @@ class App extends Component {
         center: { lat: this.venues[0].location.lat, lng: this.venues[0].location.lng }
         });
 
+
+        //loads markers
         this.venues.forEach(venue => {
           let marker = new google.maps.Marker({
           position: { lat: venue.location.lat, lng: venue.location.lng },
@@ -46,6 +49,7 @@ class App extends Component {
           animation: google.maps.Animation.DROP
           });
 
+          //markers animation on click
           marker.addListener('click', () => {
             if (marker.getAnimation() !== null) { marker.setAnimation(null); }
             else { marker.setAnimation(google.maps.Animation.BOUNCE); }
@@ -65,6 +69,8 @@ class App extends Component {
     })
   }
     
+
+    //when clicks on venue lists info window opens
     listItemClick = (venue) => {
       let marker = this.markers.filter(m => m.id === venue.id)[0];
       this.infowindow.setContent(marker.name);
@@ -76,6 +82,8 @@ class App extends Component {
       setTimeout(() => { marker.setAnimation(null) }, 1500);
     }
 
+
+    //filters names that we type in search bar
     filterVenues = (query) => {
 
       let f = this.venues.filter(venue => venue.name.toLowerCase().includes(query.toLowerCase()));
@@ -88,13 +96,14 @@ class App extends Component {
       this.setState ({ filteredVenues: f, query});
     }
 
+  //renders the page
   render() {
     return (
         <div>
           <div className="App-header"><h1>
             Neighborhood Map
           </h1></div>
-          <div id="map"></div>
+          <div id="map" role="application"></div>
           <Sidebar 
             filterVenues={this.filterVenues}
             filteredVenues={this.state.filteredVenues}

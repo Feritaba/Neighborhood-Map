@@ -3,10 +3,15 @@ export function load_google_maps() {
     // define the global callback that will run when google maps is loaded
     window.resolveGoogleMapsPromise = function() {
       // resolve the google object
-      resolve(window.google);
+        resolve(window.google);
       // delete the global callback to tidy up since it is no longer needed
       delete window.resolveGoogleMapsPromise;
     }
+
+    function gm_authFailure(){
+      window.alert("Google Maps error!");
+    }
+    
     // Now, Load the Google Maps API
     const script = document.createElement("script");
     const API_KEY = 'AIzaSyB3ro0efVYXR4fpp2LGFy_OH_1pYSGr5zU';
