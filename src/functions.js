@@ -8,13 +8,17 @@ export function load_google_maps() {
       delete window.resolveGoogleMapsPromise;
     }
 
-    function gm_authFailure(){
+    window.gm_authFailure =() => {
       window.alert("Google Maps error!");
-    }
+    };
     
     // Now, Load the Google Maps API
     const script = document.createElement("script");
     const API_KEY = 'AIzaSyB3ro0efVYXR4fpp2LGFy_OH_1pYSGr5zU';
+
+      //incorrect key for testing google maps failure
+      // const API_KEY = 'AIzaSyB3ro0efVYXR4fpp2SGr5zU';
+
     script.src = `https://maps.googleapis.com/maps/api/js?libraries=places&key=${API_KEY}&callback=resolveGoogleMapsPromise`;
     script.async = true;
     document.body.appendChild(script);
