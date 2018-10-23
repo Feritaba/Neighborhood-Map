@@ -8,7 +8,7 @@ export function load_google_maps() {
       delete window.resolveGoogleMapsPromise;
     }
 
-    window.gm_authFailure =() => {
+    window.gm_authFailure = () => {
       window.alert("Google Maps error!");
     };
     

@@ -85,4 +85,9 @@ body {
     width: 30%;
     margin-top: 50px;
   }
+  #search {
+    padding: 10%;
+    height: 50px;
+    font-size: 0.60em; 
+  }
 }
