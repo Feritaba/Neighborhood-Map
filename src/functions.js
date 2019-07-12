@@ -14,7 +14,7 @@ export function load_google_maps() {
     
     // Now, Load the Google Maps API
     const script = document.createElement("script");
-    const API_KEY = 'AIzaSyB3ro0efVYXR4fpp2LGFy_OH_1pYSGr5zU';
+    const API_KEY = '=';
 
       //incorrect key for testing google maps failure
       // const API_KEY = 'AIzaSyB3ro0efVYXR4fpp2SGr5zU';
